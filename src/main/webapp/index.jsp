@@ -11,6 +11,6 @@
     <title>$Title$</title>
   </head>
   <body>
-  $END$ hoang vi viet
+  $END$
   </body>
 </html>
