@@ -12,11 +12,11 @@ import java.util.List;
 public class UserDAO implements IUserDAO {
     private final String INSERT_USERS_SQL = "INSERT INTO user" + " (username, password, email) VALUES " + " (?, ?, ?);";
     private final String SELECT_USER_BY_USERNAME_PASS = "select * from user where username like ? and password like ?";
-    private final String SELECT_USER_BY_USERNAME = "select id, username, password, email, address, avatar from user where username like ?";
+    private final String SELECT_USER_BY_USERNAME = "select id, username, password, email, role, avatar from user where username like ?";
     private final String SELECT_USER_BY_ID = "select * from user where id = ?";
     private final String SELECT_ALL_USERS = "select * from user";
     private final String DELETE_USERS_SQL = "delete from user where id = ?;";
-    private final String UPDATE_USERS_SQL = "update user set username = ?, password = ?,  email= ?, address =?, avatar = ? where id = ?";
+    private final String UPDATE_USERS_SQL = "update user set username = ?, password = ?,  email= ?, role =?, avatar = ? where id = ?";
 
     public UserDAO() {
 
@@ -26,7 +26,7 @@ public class UserDAO implements IUserDAO {
         Connection connection = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/demo20062?useSSL=false", "root", "123456");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/product–management?useSSL=false", "root", "123456");
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
