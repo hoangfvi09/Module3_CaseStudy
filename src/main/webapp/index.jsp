@@ -11,7 +11,5 @@
     <title>$Title$</title>
   </head>
   <body>
-  $END$ hoang vi viet cai nay ne
-  uyle ne
-  </body>
+</body>
 </html>
