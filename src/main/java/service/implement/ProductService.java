@@ -3,43 +3,199 @@ package service.implement;
 import model.Product;
 import service.serviceInterface.IProductService;
 
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductService implements IProductService {
-    @Override
-    public List<Product> findByName(String name) {
-        return null;
+    private final String SQL_GET_PRODUCTS_BY_NAME = "{CALL get_products_by_name(?)}";
+    private final String SQL_GET_PRODUCTS_BY_CATEGORY = "{CALL get_products_by_category(?)}";
+    private final String SQL_GET_PRODUCTS_BY_PRICE = "{CALL get_products_by_price(?,?)}";
+    private final String SQL_GET_PRODUCTS_BY_SIZE = "{CALL get_products_by_size(?)}";
+    private final String SQL_GET_ALL_PRODUCTS_PRICE_ASC = "{CALL get_all_products_price_asc()}";
+    private final String SQL_GET_ALL_PRODUCTS_PRICE_DESC = "{CALL get_all_products_price_desc()}";
+    private final String SQL_GET_ALL_PRODUCTS = "{CALL get_all_products()}";
+    private final String SQL_GET_PRODUCT_BY_ID = "{CALL get_product_by_id(?)}";
+
+
+    public ProductService() {
+    }
+
+    protected Connection getConnection() {
+        Connection connection = null;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/product-management?useSSL=false", "root", "123456");
+        } catch (SQLException | ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return connection;
     }
 
     @Override
-    public List<Product> findByCategory(String categoryName) {
-        return null;
+    public List<Product> findByName(String name) {
+        List<Product> products = new ArrayList<>();
+
+        try (Connection connection = getConnection();
+
+             CallableStatement callableStatement = connection.prepareCall(SQL_GET_PRODUCTS_BY_NAME);) {
+            callableStatement.setString(1, "%" + name + "%");
+
+            ResultSet rs = callableStatement.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String productName = rs.getString("name");
+                int categoryId = rs.getInt("categoryId");
+                String description = rs.getString("description");
+                String image = rs.getString("image");
+                int sold = rs.getInt("sold");
+                products.add(new Product(id, productName, categoryId, description, image, sold));
+            }
+
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return products;
+    }
+
+    @Override
+    public List<Product> findByCategory(int categoryId) {
+        List<Product> products = new ArrayList<>();
+        try (Connection connection = getConnection();
+             CallableStatement callableStatement = connection.prepareCall(SQL_GET_PRODUCTS_BY_CATEGORY);) {
+            callableStatement.setInt(1, categoryId);
+            ResultSet rs = callableStatement.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String productName = rs.getString("name");
+                String description = rs.getString("description");
+                String image = rs.getString("image");
+                int sold = rs.getInt("sold");
+                products.add(new Product(id, productName, categoryId, description, image, sold));
+            }
+
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return products;
     }
 
     @Override
     public List<Product> findBySize(int size) {
-        return null;
+        List<Product> products = new ArrayList<>();
+        try (Connection connection = getConnection();
+             CallableStatement callableStatement = connection.prepareCall(SQL_GET_PRODUCTS_BY_SIZE);) {
+            callableStatement.setInt(1, size);
+            ResultSet rs = callableStatement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String productName = rs.getString("name");
+                String description = rs.getString("description");
+                int categoryId = rs.getInt("categoryId");
+                String image = rs.getString("image");
+                int sold = rs.getInt("sold");
+                products.add(new Product(id, productName, categoryId, description, image, sold));
+            }
+
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return products;
     }
 
     @Override
     public List<Product> findAllPriceDesc() {
-        return null;
+        List<Product> products = new ArrayList<>();
+        try (Connection connection = getConnection();
+             CallableStatement callableStatement = connection.prepareCall(SQL_GET_ALL_PRODUCTS_PRICE_DESC);) {
+            ResultSet rs = callableStatement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String productName = rs.getString("name");
+                String description = rs.getString("description");
+                int categoryId = rs.getInt("categoryId");
+                String image = rs.getString("image");
+                int sold = rs.getInt("sold");
+                products.add(new Product(id, productName, categoryId, description, image, sold));
+            }
+
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return products;
+
     }
 
     @Override
     public List<Product> findAllPriceAsc() {
-        return null;
+        List<Product> products = new ArrayList<>();
+        try (Connection connection = getConnection();
+             CallableStatement callableStatement = connection.prepareCall(SQL_GET_ALL_PRODUCTS_PRICE_ASC);) {
+            ResultSet rs = callableStatement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String productName = rs.getString("name");
+                String description = rs.getString("description");
+                int categoryId = rs.getInt("categoryId");
+                String image = rs.getString("image");
+                int sold = rs.getInt("sold");
+                products.add(new Product(id, productName, categoryId, description, image, sold));
+            }
+
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return products;
     }
 
     @Override
     public List<Product> findByPrice(double max, double min) {
-        return null;
+        List<Product> products = new ArrayList<>();
+        try (Connection connection = getConnection();
+             CallableStatement callableStatement = connection.prepareCall(SQL_GET_PRODUCTS_BY_PRICE);) {
+            callableStatement.setDouble(1, min);
+            callableStatement.setDouble(1, max);
+            ResultSet rs = callableStatement.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String productName = rs.getString("name");
+                String description = rs.getString("description");
+                int categoryId = rs.getInt("categoryId");
+                String image = rs.getString("image");
+                int sold = rs.getInt("sold");
+                products.add(new Product(id, productName, categoryId, description, image, sold));
+            }
+
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return products;
     }
 
     @Override
     public List<Product> findAll() throws SQLException {
-        return null;
+        List<Product> products = new ArrayList<>();
+        try (Connection connection = getConnection();
+             CallableStatement callableStatement = connection.prepareCall(SQL_GET_ALL_PRODUCTS);) {
+            ResultSet rs = callableStatement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String productName = rs.getString("name");
+                String description = rs.getString("description");
+                int categoryId = rs.getInt("categoryId");
+                String image = rs.getString("image");
+                int sold = rs.getInt("sold");
+                products.add(new Product(id, productName, categoryId, description, image, sold));
+            }
+
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return products;
     }
 
     @Override
@@ -59,6 +215,36 @@ public class ProductService implements IProductService {
 
     @Override
     public Product findById(int id) throws SQLException {
-        return null;
+        Product product = null;
+        try (Connection connection = getConnection();
+             CallableStatement callableStatement = connection.prepareCall(SQL_GET_PRODUCT_BY_ID);) {
+            ResultSet rs = callableStatement.executeQuery();
+                String productName = rs.getString("name");
+                String description = rs.getString("description");
+                int categoryId = rs.getInt("categoryId");
+                String image = rs.getString("image");
+                int sold = rs.getInt("sold");
+                product = new Product(id, productName, categoryId, description, image, sold);
+
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return product;
+    }
+
+    private void printSQLException(SQLException ex) {
+        for (Throwable e : ex) {
+            if (e instanceof SQLException) {
+                e.printStackTrace(System.err);
+                System.err.println("SQLState: " + ((SQLException) e).getSQLState());
+                System.err.println("Error Code: " + ((SQLException) e).getErrorCode());
+                System.err.println("Message: " + e.getMessage());
+                Throwable t = ex.getCause();
+                while (t != null) {
+                    System.out.println("Cause: " + t);
+                    t = t.getCause();
+                }
+            }
+        }
     }
 }
