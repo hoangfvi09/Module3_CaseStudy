@@ -1,20 +1,18 @@
 package model;
 
-import java.sql.Timestamp;
-
 public class Review {
     private int userId;
     private int productId;
     private String content;
     private int rate;
-    private Timestamp date;
+    private String time;
 
-    public Review(int userId, int productId, String content, int rate, Timestamp date) {
+    public Review(int userId, int productId, String content, int rate, String date) {
         this.userId = userId;
         this.productId = productId;
         this.content = content;
         this.rate = rate;
-        this.date = date;
+        this.time = date;
     }
 
     public Review() {
@@ -52,11 +50,8 @@ public class Review {
         this.rate = rate;
     }
 
-    public Timestamp getDate() {
-        return date;
+    public String getTime() {
+        return time;
     }
 
-    public void setDate(Timestamp date) {
-        this.date = date;
-    }
 }

@@ -13,6 +13,26 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    public List<Product> findByCategory(String categoryName) {
+        return null;
+    }
+
+    @Override
+    public List<Product> findBySize(int size) {
+        return null;
+    }
+
+    @Override
+    public List<Product> findAllPriceDesc() {
+        return null;
+    }
+
+    @Override
+    public List<Product> findAllPriceAsc() {
+        return null;
+    }
+
+    @Override
     public List<Product> findAll() throws SQLException {
         return null;
     }

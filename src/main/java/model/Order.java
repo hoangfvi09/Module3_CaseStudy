@@ -6,14 +6,14 @@ import java.util.Date;
 public class Order {
     private int id;
     private int userId;
-    private Timestamp time;
+    private String time;
     private String address;
     private String phoneNo;
 
     public Order() {
     }
 
-    public Order(int id, int userId, Timestamp time, String address, String phoneNo) {
+    public Order(int id, int userId, String time, String address, String phoneNo) {
         this.id = id;
         this.userId = userId;
         this.time = time;
@@ -34,13 +34,10 @@ public class Order {
         this.userId = userId;
     }
 
-    public Date getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Timestamp time) {
-        this.time = time;
-    }
 
     public String getAddress() {
         return address;
