@@ -4,12 +4,14 @@ import model.Cart;
 import model.Product;
 import service.serviceInterface.ICartService;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 public class CartService implements ICartService {
+
+    private final String SQL_EMPTY_CART = "{CALL empty_cart()}";
+    private final String SQL_DELETE_PRODUCT_FROM_CART = "{CALL delete_product_from_cart(?)}";
+
     public CartService() {
     }
 
@@ -32,12 +34,26 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public boolean deleteProduct(Product product) {
+    public boolean deleteProduct(int id) {
+        try (Connection connection = getConnection();
+             CallableStatement callableStatement = connection.prepareCall( SQL_DELETE_PRODUCT_FROM_CART);) {
+            int result = callableStatement.executeUpdate();
+            return result >= 1;
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
         return false;
     }
 
     @Override
     public boolean deleteAllProducts() {
+        try (Connection connection = getConnection();
+             CallableStatement callableStatement = connection.prepareCall(SQL_EMPTY_CART);) {
+            int result = callableStatement.executeUpdate();
+            return result >= 1;
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
         return false;
     }
 
