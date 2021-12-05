@@ -19,6 +19,11 @@ public class CartService implements ICartService {
     }
 
     @Override
+    public boolean deleteAllProducts() {
+        return false;
+    }
+
+    @Override
     public boolean increaseQuantity(Product product) {
         return false;
     }

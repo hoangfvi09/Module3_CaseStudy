@@ -33,6 +33,11 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    public List<Product> findByPrice(double max, double min) {
+        return null;
+    }
+
+    @Override
     public List<Product> findAll() throws SQLException {
         return null;
     }

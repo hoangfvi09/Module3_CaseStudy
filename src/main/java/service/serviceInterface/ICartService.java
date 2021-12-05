@@ -8,6 +8,8 @@ public interface ICartService extends IService<Cart> {
 
     boolean deleteProduct(Product product);
 
+    boolean deleteAllProducts();
+
     boolean increaseQuantity(Product product);
 
     boolean decreaseQuantity(Product product);
