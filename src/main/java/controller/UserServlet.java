@@ -86,7 +86,7 @@ public class UserServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String image = request.getParameter("image");
-        User user = new User( id, name, email, password, 0, image);
+        User user = new User( id, name, email, password,role, image);
         userService.updateUser(user);
         response.sendRedirect("/users");
     }
