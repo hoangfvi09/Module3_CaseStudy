@@ -28,6 +28,9 @@ public class UserServlet extends HttpServlet {
                 case "create":
                     showNewForm(request, response);
                     break;
+                case "edit":
+                    showEditForm(request, response);
+                    break;
                 default:
                     showAllUser(request, response);
                     break;
@@ -35,6 +38,14 @@ public class UserServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        User existingUser = userService.findById(id);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("user/edit_user.jsp");
+        request.setAttribute("user", existingUser);
+        dispatcher.forward(request, response);
     }
 
     private void showNewForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -60,9 +71,24 @@ public class UserServlet extends HttpServlet {
                 case "create":
                     insertUser(request, response);
                     break;
+                case "edit":
+                    updateUser(request, response);
+                    break;
             }
         } catch (SQLException e) {
         }
+    }
+
+    private void updateUser(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        int role = Integer.parseInt(request.getParameter("role"));
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        String image = request.getParameter("image");
+        User user = new User( id, name, email, password, 0, image);
+        userService.updateUser(user);
+        response.sendRedirect("/users");
     }
 
     private void insertUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {

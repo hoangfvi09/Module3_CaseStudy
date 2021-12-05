@@ -40,11 +40,10 @@
                 <td>
                     <img src="${user.image}" alt="avatar" height="50" width="50">
                 </td>
-<%--                <td>--%>
-<%--                <td>--%>
-<%--                    <a href="/users?action=edit&id=${user.id}">Edit</a>--%>
+                <td>
+                    <a href="/users?action=edit&id=${user.id}">Edit</a>
 <%--                    <a href="/users?action=delete&id=${user.id}">Delete</a>--%>
-<%--                </td>--%>
+                </td>
             </tr>
         </c:forEach>
     </table>

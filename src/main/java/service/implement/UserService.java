@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserService implements IUserService {
+
     private String jdbcURL = "jdbc:mysql://localhost:3306/product_management?useSSL=false";
     private String jdbcUsername = "root";
     private String jdbcPassword = "123456";
@@ -77,26 +78,96 @@ public class UserService implements IUserService {
     @Override
     public void update(int id, User user) throws SQLException {
 
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USERS_SQL);) {
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getEmail());
+            preparedStatement.setString(3, user.getPassword());
+            preparedStatement.setInt(3, user.getRole());
+            preparedStatement.setString(5, user.getImage());
+            preparedStatement.setInt(6, user.getId());
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+        }
+
     }
 
     @Override
     public void delete(int id) throws SQLException {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USERS_SQL);) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+        }
 
     }
 
     @Override
     public User findById(int id) throws SQLException {
-        return null;
+        User user = null;
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_ID);) {
+            preparedStatement.setInt(1, id);
+            System.out.println(preparedStatement);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                String name = resultSet.getString("name");
+                String email = resultSet.getString("email");
+                String password = resultSet.getString("password");
+                int role = resultSet.getInt("role");
+                String image = resultSet.getString("image");
+                user = new User(id, name, email, password, role, image);
+            }
+        } catch (SQLException e) {
+        }
+        return user;
     }
 
     @Override
-    public User findByEmail(String email) {
-        return null;
+    public List<User> findByEmail(String emailToFind) {
+        List<User> users = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_EMAIL);) {
+            System.out.println(preparedStatement);
+            preparedStatement.setString(1, "%" + emailToFind + "%");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                String email = resultSet.getString("email");
+                String password = resultSet.getString("password");
+                int role = resultSet.getInt("role");
+                String image = resultSet.getString("image");
+                users.add(new User(id, name, email, password, role, image));
+            }
+        } catch (SQLException e) {
+        }
+        return users;
     }
 
     @Override
     public User verifyLogin(String username, String password) {
         return null;
+    }
+
+    @Override
+    public boolean updateUser(User user) throws SQLException {
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USERS_SQL);) {
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getEmail());
+            preparedStatement.setString(3, user.getPassword());
+            preparedStatement.setInt(3, user.getRole());
+            preparedStatement.setString(5, user.getImage());
+            preparedStatement.setInt(6, user.getId());
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
+        }catch (SQLException e) {
+        }
+        return true;
     }
 }
 
