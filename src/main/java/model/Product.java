@@ -8,20 +8,18 @@ public class Product {
     private int categoryId;
     private String description;
     private String image;
-    private float rate;
     private int sold;
     private List<Review> reviews;
 
     public Product() {
     }
 
-    public Product(int id, String name, int categoryId, String description, String image, float rate, int sold) {
+    public Product(int id, String name, int categoryId, String description, String image, int sold) {
         this.id = id;
         this.name = name;
         this.categoryId = categoryId;
         this.description = description;
         this.image = image;
-        this.rate = rate;
         this.sold = sold;
         this.reviews = null;
     }
@@ -61,14 +59,6 @@ public class Product {
 
     public void setImage(String image) {
         this.image = image;
-    }
-
-    public float getRate() {
-        return rate;
-    }
-
-    public void setRate(float rate) {
-        this.rate = rate;
     }
 
     public int getSold() {
