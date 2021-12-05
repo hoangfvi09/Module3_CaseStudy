@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 public class Product {
     private int id;
     private String name;
@@ -8,6 +10,7 @@ public class Product {
     private String image;
     private float rate;
     private int sold;
+    private List<Review> reviews;
 
     public Product() {
     }
@@ -20,15 +23,13 @@ public class Product {
         this.image = image;
         this.rate = rate;
         this.sold = sold;
+        this.reviews = null;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -76,5 +77,13 @@ public class Product {
 
     public void setSold(int sold) {
         this.sold = sold;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 }
