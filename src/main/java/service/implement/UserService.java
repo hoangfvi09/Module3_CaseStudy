@@ -40,34 +40,12 @@ public class UserService implements IUserService {
 
     @Override
     public List<User> findAll() throws SQLException {
-//        List<User> userList = new ArrayList<>();
-//        try (Connection connection = getConnection();
-//             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USERS);) {
-//            System.out.println(preparedStatement);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//            while (resultSet.next()) {
-//                int id = resultSet.getInt("id");
-//                String name = resultSet.getString("name");
-//                String email = resultSet.getString("email");
-//                String password = resultSet.getString("password");
-//                int role = resultSet.getInt("role");
-//                String image = resultSet.getString("image");
-//                userList.add(new User(id, name, email, password, role, image));
-//            }
-//        } catch (SQLException e) {
-//        }
-//        return userList;
-        List<User> users = new ArrayList<>();
-        // Step 1: Establishing a Connection
-        try (Connection connection = getConnection();
 
-             // Step 2:Create a statement using connection object
+        List<User> users = new ArrayList<>();
+        try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USERS);) {
             System.out.println(preparedStatement);
-            // Step 3: Execute the query or update query
             ResultSet resultSet = preparedStatement.executeQuery();
-
-            // Step 4: Process the ResultSet object.
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
@@ -84,7 +62,16 @@ public class UserService implements IUserService {
 
     @Override
     public void save(User user) throws SQLException {
-
+        System.out.println(INSERT_USERS_SQL);
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USERS_SQL)) {
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getEmail());
+            preparedStatement.setString(3, user.getPassword());
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+        }
     }
 
     @Override

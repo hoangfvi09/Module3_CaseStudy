@@ -25,6 +25,9 @@ public class UserServlet extends HttpServlet {
         }
         try {
             switch (action) {
+                case "create":
+                    showNewForm(request, response);
+                    break;
                 default:
                     showAllUser(request, response);
                     break;
@@ -32,6 +35,11 @@ public class UserServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private void showNewForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("user/create_user.jsp");
+        dispatcher.forward(request, response);
     }
 
     private void showAllUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
@@ -43,6 +51,27 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action");
+        if (action == null) {
+            action = "";
+        }
+        try {
+            switch (action) {
+                case "create":
+                    insertUser(request, response);
+                    break;
+            }
+        } catch (SQLException e) {
+        }
+    }
 
+    private void insertUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        User newUser = new User(name, email, password);
+        userService.save(newUser);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("user/create_user.jsp");
+        dispatcher.forward(request, response);
     }
 }
