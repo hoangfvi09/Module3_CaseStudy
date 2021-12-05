@@ -35,10 +35,9 @@ public class UserServlet extends HttpServlet {
     }
 
     private void showAllUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+        List<User> userList = userService.findAll();
+        request.setAttribute("userList", userList);
         requestDispatcher = request.getRequestDispatcher("user/list_user.jsp");
-//        List<User> userList = new ArrayList<>();
-//        userList = userService.findAll();
-//        request.setAttribute("userList", userList);
         requestDispatcher.forward(request, response);
     }
 
