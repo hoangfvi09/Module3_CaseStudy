@@ -5,18 +5,26 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private int sole;
+    private int role;
     private String image;
 
     public User() {
     }
 
-    public User(int id, String name, String email, String password, int sole, String image) {
+    public User(int id, String name, String email, String password, int role, String image) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.sole = sole;
+        this.role = role;
+        this.image = image;
+    }
+
+    public User(String name, String email, String password, int role, String image) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
         this.image = image;
     }
 
@@ -52,12 +60,12 @@ public class User {
         this.password = password;
     }
 
-    public int getSole() {
-        return sole;
+    public int getRole() {
+        return role;
     }
 
-    public void setSole(int sole) {
-        this.sole = sole;
+    public void setRole(int role) {
+        this.role = role;
     }
 
     public String getImage() {
