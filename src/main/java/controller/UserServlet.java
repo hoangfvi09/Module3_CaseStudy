@@ -1,8 +1,8 @@
 package controller;
 
-import dao.IUserDAO;
-import dao.UserDAO;
 import model.User;
+import service.implement.UserService;
+import service.serviceInterface.IUserService;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @WebServlet(name = "UserServlet", value = "/users")
 public class UserServlet extends HttpServlet {
-    IUserDAO userDAO = new UserDAO();
+    IUserService userService = new UserService();
     private RequestDispatcher requestDispatcher = null;
 
     @Override
@@ -25,22 +25,19 @@ public class UserServlet extends HttpServlet {
         }
         try {
             switch (action) {
-
                 default:
                     showAllUser(request, response);
                     break;
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 
-    private void showAllUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, ClassNotFoundException, ServletException, IOException {
+    private void showAllUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         requestDispatcher = request.getRequestDispatcher("user/list_user.jsp");
 //        List<User> userList = new ArrayList<>();
-//        userList = userDAO.findAll();
+//        userList = userService.findAll();
 //        request.setAttribute("userList", userList);
         requestDispatcher.forward(request, response);
     }
