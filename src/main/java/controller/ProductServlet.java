@@ -27,13 +27,13 @@ public class ProductServlet extends HttpServlet {
             case "create":
                 showCreateForm(request, response);
                 break;
-//            case "delete":
-//                try {
-//                    deleteProduct(request,response);
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//                break;
+            case "delete":
+                try {
+                    deleteProduct(request,response);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                break;
             case "edit":
                 break;
             case "list":
@@ -58,11 +58,11 @@ public class ProductServlet extends HttpServlet {
 
     }
 
-//    private void deleteProduct(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
-//        int id = Integer.parseInt(request.getParameter("id"));
-//        productService.delete(id);
-//        response.sendRedirect("/products?action=list");
-//    }
+    private void deleteProduct(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        productService.delete(id);
+        response.sendRedirect("/products?action=list");
+    }
 
     private void showCreateForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("product/ad-create.jsp");
