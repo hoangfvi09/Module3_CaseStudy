@@ -13,9 +13,7 @@
 <body>
 <center>
     <h1>User Management</h1>
-    <h2>
-        <a href="/users">List All Users</a>
-    </h2>
+
 </center>
 <div align="center">
     <form method="post">
@@ -43,7 +41,8 @@
             </tr>
             <tr>
                 <td colspan="2" align="center">
-                    <input type="submit" value="Save"/>
+                    <input type="submit" value="Save"/> <br>
+                        <a href="/login">Back</a>
                 </td>
             </tr>
         </table>

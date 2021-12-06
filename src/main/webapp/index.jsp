@@ -12,5 +12,6 @@
   </head>
   <body>
   <a href="/users">show form</a>
+  <a href="/login">show login</a>
   </body>
 </html>

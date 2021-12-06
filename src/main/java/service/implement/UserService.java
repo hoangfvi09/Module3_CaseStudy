@@ -15,11 +15,12 @@ public class UserService implements IUserService {
 
     private final String INSERT_USERS_SQL = "INSERT INTO users" + " (name, email, password) VALUES " + " (?, ?, ?);";
     private final String SELECT_USER_BY_EMAIL_PASS = "select * from users where email like ? and password like ?";
-    private final String SELECT_USER_BY_EMAIL = "select id, name, email, password, role, image from user where email like ?";
+    private final String SELECT_USER_BY_EMAIL = "select id, name, email, password, role, image from users where email like ?";
     private final String SELECT_USER_BY_ID = "select * from users where id = ?";
     private final String SELECT_ALL_USERS = "select * from users";
     private final String DELETE_USERS_SQL = "delete from users where id = ?;";
     private final String UPDATE_USERS_SQL = "update users set name = ?, email= ?, password = ?, role =?, image = ? where id = ?";
+    private final String LOGIN_USER_SQL = "select * from users where email = ? and password = ?";
 
     public UserService() {
     }
@@ -91,22 +92,6 @@ public class UserService implements IUserService {
         } catch (SQLException e) {
         }
     }
-//    @Override
-//    public boolean updateUser(User user) throws SQLException {
-//        try (Connection connection = getConnection();
-//             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USERS_SQL);) {
-//            preparedStatement.setString(1, user.getName());
-//            preparedStatement.setString(2, user.getEmail());
-//            preparedStatement.setString(3, user.getPassword());
-//            preparedStatement.setInt(4, user.getRole());
-//            preparedStatement.setString(5, user.getImage());
-//            preparedStatement.setInt(6, user.getId());
-//            System.out.println(preparedStatement);
-//            preparedStatement.executeUpdate();
-//        }catch (SQLException e) {
-//        }
-//        return true;
-//    }
 
     @Override
     public void delete(int id) throws SQLException {
@@ -164,6 +149,23 @@ public class UserService implements IUserService {
 
     @Override
     public User verifyLogin(String username, String password) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(LOGIN_USER_SQL);){
+                System.out.println(preparedStatement);
+                preparedStatement.setString(1, username);
+                preparedStatement.setString(2, password);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    return new User(resultSet.getInt(1),
+                            resultSet.getString(2),
+                            resultSet.getString(3),
+                            resultSet.getString(4),
+                            resultSet.getInt(5),
+                            resultSet.getString(6));
+                }
+            }
+        catch (SQLException e) {
+        }
         return null;
     }
 
