@@ -23,6 +23,14 @@ public class Product {
         this.sold = sold;
     }
 
+    public Product(String name, int categoryId, String description, String image, int sold) {
+        this.name = name;
+        this.categoryId = categoryId;
+        this.description = description;
+        this.image = image;
+        this.sold = sold;
+    }
+
     public int getId() {
         return id;
     }

@@ -13,8 +13,7 @@
     <title>Title</title>
 </head>
 <body>
-
-
+<a href="/products?action=create">Create product</a><br><br>
 <div align="center">
     <table border="1" cellpadding="5">
         <caption><h2>${listName}</h2></caption>
@@ -35,9 +34,11 @@
                 <td>${product.description}</td>
                 <td>${product.image}</td>
                 <td>${product.sold}</td>
+                <td> <a onclick="return confirm('Are you sure?')"
+                        href="/products?action=delete&id=${product.id}">delete</a>
+                </td>
                 <td>
-<%--                    <a href="/products?action=edit&id=${user.id}">Edit</a>--%>
-<%--                    <a href="/users?action=delete&id=${user.id}">Delete</a>--%>
+                    <a href="/products?action=edit&id=${product.id}">Edit</a>,
                 </td>
             </tr>
         </c:forEach>

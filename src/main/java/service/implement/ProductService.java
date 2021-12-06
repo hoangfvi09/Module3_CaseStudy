@@ -16,6 +16,15 @@ public class ProductService implements IProductService {
     private final String SQL_GET_PRODUCT_BY_ID = "{CALL get_product_by_id(?)}";
 
 
+    private static final String INSERT_PRODUCTS_SQL = "INSERT INTO products (name,categoryId,description,image,sold) VALUES (?,?,?,?,?);";
+    private static final String SELECT_PRODUCTS_BY_ID = "select id,name,categoryId,description,image,sold from products where id =?";
+    private static final String SELECT_ALL_PRODUCTS = "select * from products";
+    private static final String DELETE_PRODUCTS_SQL = "delete from products where id = ?;";
+    private static final String UPDATE_PRODUCTS_SQL = "update products set id=?,name=?,categoryId=?,description=?,image=?,sold=? where id = ?;";
+
+
+
+
     public ProductService() {
     }
 
@@ -154,6 +163,17 @@ public class ProductService implements IProductService {
 
     @Override
     public void save(Product product) throws SQLException {
+        try (
+                Connection connection = getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(INSERT_PRODUCTS_SQL)) {
+            preparedStatement.setString(1, product.getName());
+            preparedStatement.setInt(2,product.getCategoryId());
+            preparedStatement.setString(3,product.getDescription());
+            preparedStatement.setString(4,product.getImage());
+            preparedStatement.setInt(5,product.getSold());
+            preparedStatement.executeUpdate();
+        } catch (SQLException ignored) {
+        }
 
     }
 
@@ -164,7 +184,13 @@ public class ProductService implements IProductService {
 
     @Override
     public void delete(int id) throws SQLException {
-
+        try (
+                Connection connection = getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(DELETE_PRODUCTS_SQL);) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException ignored) {
+        }
     }
 
     @Override
