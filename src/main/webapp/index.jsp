@@ -15,6 +15,6 @@
   uyle ne
   anh việt viết
   hoangf vi viet dong nay
-  <a href="/products">ấn</a>
+  <a href="/products?action=list">ấn</a>
   </body>
 </html>

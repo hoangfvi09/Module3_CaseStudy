@@ -35,6 +35,7 @@ public class ProductServlet extends HttpServlet {
                 }
                 break;
             case "edit":
+                editForm(request,response);
                 break;
             case "list":
                 try {
@@ -56,6 +57,11 @@ public class ProductServlet extends HttpServlet {
 
         }
 
+    }
+
+    private void editForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+            RequestDispatcher requestDispatcher=request.getRequestDispatcher("product/ad-edit.jsp");
+            requestDispatcher.forward(request,response);
     }
 
     private void deleteProduct(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
@@ -115,7 +121,27 @@ public class ProductServlet extends HttpServlet {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+                break;
+            case "edit":
+                try {
+                    editProduct(request,response);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                break;
         }
+    }
+
+    private void editProduct(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+        int id = Integer.parseInt(request.getParameter("id"));
+        String name=request.getParameter("name");
+        int categoryId= Integer.parseInt(request.getParameter("categoryId"));
+        String description= request.getParameter("description");
+        String image =request.getParameter("image");
+        int sold = Integer.parseInt(request.getParameter("sold"));
+        Product product=new Product(name,categoryId,description,image,sold);
+        productService.update(id,product);
+        response.sendRedirect("/products?action=list");
     }
 
     private void saveProduct(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {

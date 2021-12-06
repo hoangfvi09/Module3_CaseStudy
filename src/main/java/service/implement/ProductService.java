@@ -20,7 +20,7 @@ public class ProductService implements IProductService {
     private static final String SELECT_PRODUCTS_BY_ID = "select id,name,categoryId,description,image,sold from products where id =?";
     private static final String SELECT_ALL_PRODUCTS = "select * from products";
     private static final String DELETE_PRODUCTS_SQL = "delete from products where id = ?;";
-    private static final String UPDATE_PRODUCTS_SQL = "update products set id=?,name=?,categoryId=?,description=?,image=?,sold=? where id = ?;";
+    private static final String UPDATE_PRODUCTS_SQL = "update products set name=?,categoryId=?,description=?,image=?,sold=? where id = ?;";
 
 
 
@@ -179,7 +179,18 @@ public class ProductService implements IProductService {
 
     @Override
     public void update(int id, Product product) throws SQLException {
-
+        try (
+                Connection connection = getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_PRODUCTS_SQL);) {
+            preparedStatement.setString(1, product.getName());
+          preparedStatement.setInt(2,product.getCategoryId());
+          preparedStatement.setString(3,product.getDescription());
+          preparedStatement.setString(4,product.getImage());
+          preparedStatement.setInt(5,product.getSold());
+            preparedStatement.setInt(6,id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException ignored) {
+        }
     }
 
     @Override
