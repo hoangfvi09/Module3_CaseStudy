@@ -9,7 +9,7 @@ public class Product {
     private String description;
     private String image;
     private int sold;
-    private List<Review> reviews;
+
 
     public Product() {
     }
@@ -21,7 +21,6 @@ public class Product {
         this.description = description;
         this.image = image;
         this.sold = sold;
-        this.reviews = null;
     }
 
     public int getId() {
@@ -69,11 +68,4 @@ public class Product {
         this.sold = sold;
     }
 
-    public List<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
-    }
 }

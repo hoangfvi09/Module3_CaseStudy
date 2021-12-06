@@ -5,7 +5,10 @@ import model.Product;
 import java.util.List;
 
 public interface IProductService extends IService<Product> {
+
     List<Product> findByName(String name);
+
+    List<Product> find(String info);
 
     List<Product> findByCategory(int categoryId);
 

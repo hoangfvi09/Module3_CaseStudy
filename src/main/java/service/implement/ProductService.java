@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductService implements IProductService {
+    private final String SQL_GET_PRODUCTS = "{CALL get_products(?)}";
     private final String SQL_GET_PRODUCTS_BY_NAME = "{CALL get_products_by_name(?)}";
     private final String SQL_GET_PRODUCTS_BY_CATEGORY = "{CALL get_products_by_category(?)}";
     private final String SQL_GET_PRODUCTS_BY_PRICE = "{CALL get_products_by_price(?,?)}";
@@ -25,7 +26,7 @@ public class ProductService implements IProductService {
         Connection connection = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/product-management?useSSL=false", "root", "123456");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/product_management?useSSL=false", "root", "123456");
         } catch (SQLException | ClassNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -41,6 +42,33 @@ public class ProductService implements IProductService {
 
              CallableStatement callableStatement = connection.prepareCall(SQL_GET_PRODUCTS_BY_NAME);) {
             callableStatement.setString(1, "%" + name + "%");
+
+            ResultSet rs = callableStatement.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String productName = rs.getString("name");
+                int categoryId = rs.getInt("categoryId");
+                String description = rs.getString("description");
+                String image = rs.getString("image");
+                int sold = rs.getInt("sold");
+                products.add(new Product(id, productName, categoryId, description, image, sold));
+            }
+
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return products;
+    }
+
+    @Override
+    public List<Product> find(String info) {
+        List<Product> products = new ArrayList<>();
+
+        try (Connection connection = getConnection();
+
+             CallableStatement callableStatement = connection.prepareCall(SQL_GET_PRODUCTS);) {
+            callableStatement.setString(1, "%" + info + "%");
 
             ResultSet rs = callableStatement.executeQuery();
 
