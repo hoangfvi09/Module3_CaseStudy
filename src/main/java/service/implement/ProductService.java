@@ -9,10 +9,7 @@ import java.util.List;
 
 public class ProductService implements IProductService {
     private final String SQL_GET_PRODUCTS = "{CALL get_products(?)}";
-    private final String SQL_GET_PRODUCTS_BY_NAME = "{CALL get_products_by_name(?)}";
-    private final String SQL_GET_PRODUCTS_BY_CATEGORY = "{CALL get_products_by_category(?)}";
     private final String SQL_GET_PRODUCTS_BY_PRICE = "{CALL get_products_by_price(?,?)}";
-    private final String SQL_GET_PRODUCTS_BY_SIZE = "{CALL get_products_by_size(?)}";
     private final String SQL_GET_ALL_PRODUCTS_PRICE_ASC = "{CALL get_all_products_price_asc()}";
     private final String SQL_GET_ALL_PRODUCTS_PRICE_DESC = "{CALL get_all_products_price_desc()}";
     private final String SQL_GET_ALL_PRODUCTS = "{CALL get_all_products()}";
@@ -34,32 +31,7 @@ public class ProductService implements IProductService {
         return connection;
     }
 
-    @Override
-    public List<Product> findByName(String name) {
-        List<Product> products = new ArrayList<>();
 
-        try (Connection connection = getConnection();
-
-             CallableStatement callableStatement = connection.prepareCall(SQL_GET_PRODUCTS_BY_NAME);) {
-            callableStatement.setString(1, "%" + name + "%");
-
-            ResultSet rs = callableStatement.executeQuery();
-
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String productName = rs.getString("name");
-                int categoryId = rs.getInt("categoryId");
-                String description = rs.getString("description");
-                String image = rs.getString("image");
-                int sold = rs.getInt("sold");
-                products.add(new Product(id, productName, categoryId, description, image, sold));
-            }
-
-        } catch (SQLException e) {
-            printSQLException(e);
-        }
-        return products;
-    }
 
     @Override
     public List<Product> find(String info) {
@@ -77,52 +49,6 @@ public class ProductService implements IProductService {
                 String productName = rs.getString("name");
                 int categoryId = rs.getInt("categoryId");
                 String description = rs.getString("description");
-                String image = rs.getString("image");
-                int sold = rs.getInt("sold");
-                products.add(new Product(id, productName, categoryId, description, image, sold));
-            }
-
-        } catch (SQLException e) {
-            printSQLException(e);
-        }
-        return products;
-    }
-
-    @Override
-    public List<Product> findByCategory(int categoryId) {
-        List<Product> products = new ArrayList<>();
-        try (Connection connection = getConnection();
-             CallableStatement callableStatement = connection.prepareCall(SQL_GET_PRODUCTS_BY_CATEGORY);) {
-            callableStatement.setInt(1, categoryId);
-            ResultSet rs = callableStatement.executeQuery();
-
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String productName = rs.getString("name");
-                String description = rs.getString("description");
-                String image = rs.getString("image");
-                int sold = rs.getInt("sold");
-                products.add(new Product(id, productName, categoryId, description, image, sold));
-            }
-
-        } catch (SQLException e) {
-            printSQLException(e);
-        }
-        return products;
-    }
-
-    @Override
-    public List<Product> findBySize(int size) {
-        List<Product> products = new ArrayList<>();
-        try (Connection connection = getConnection();
-             CallableStatement callableStatement = connection.prepareCall(SQL_GET_PRODUCTS_BY_SIZE);) {
-            callableStatement.setInt(1, size);
-            ResultSet rs = callableStatement.executeQuery();
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String productName = rs.getString("name");
-                String description = rs.getString("description");
-                int categoryId = rs.getInt("categoryId");
                 String image = rs.getString("image");
                 int sold = rs.getInt("sold");
                 products.add(new Product(id, productName, categoryId, description, image, sold));

@@ -55,19 +55,9 @@ public class ProductServlet extends HttpServlet {
         String info = request.getParameter("info");
         List<Product>  listProduct = productService.find(info);
         request.setAttribute("productList", listProduct);
-        request.setAttribute("listName", "Products Found" + info);
+        request.setAttribute("listName", "Products related to " + info);
         RequestDispatcher dispatcher = request.getRequestDispatcher("product/list.jsp");
         dispatcher.forward(request, response);
-    }
-
-    private void showListByName(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String name = request.getParameter("name");
-        List<Product>  listProduct = productService.findByName(name);
-        request.setAttribute("productList", listProduct);
-        request.setAttribute("listName", "Product with name" + name);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("product/list.jsp");
-        dispatcher.forward(request, response);
-
     }
 
     private void showListPriceDesc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
