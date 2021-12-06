@@ -11,9 +11,6 @@
     <title>$Title$</title>
   </head>
   <body>
-  $END$ hoang vi viet cai nay ne
-  uyle ne
-  anh việt viết
-  hoangf vi viet dong nay
+  <a href="/users">show form</a>
   </body>
 </html>
